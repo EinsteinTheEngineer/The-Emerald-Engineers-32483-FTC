@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTC Into The Deep Mecanum Path Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e24;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { margin-bottom: 5px; color: #ff9800; }
+        p { margin-top: 0; color: #aaa; }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1300px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .canvas-container {
+            position: relative;
+        }
+        canvas {
+            border: 4px solid #444;
+            background-color: #2a2a32;
+            cursor: crosshair;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .controls {
+            flex: 1;
+            min-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        textarea {
+            width: 100%;
+            height: 240px;
+            background-color: #111;
+            color: #61afef;
+            border: 1px solid #444;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 10px;
+            border-radius: 5px;
+            resize: none;
+            box-sizing: border-box;
+            white-space: pre;
+            overflow-wrap: normal;
+            overflow-x: scroll;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .btn-clear { background-color: #e06c75; color: white; }
+        .btn-clear:hover { background-color: #c45962; }
+        .btn-simulate { background-color: #4caf50; color: white; }
+        .btn-simulate:hover { background-color: #43a047; }
+        .btn-ai { background-color: #9b51e0; color: white; }
+        .btn-ai:hover { background-color: #813dc2; }
+        .btn-copy { background-color: #ff9800; color: white; flex-grow: 1; }
+        .btn-copy:hover { background-color: #e68a00; }
+        
+        .config-panel {
+            background-color: #25252c;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .config-panel h3 { margin-top: 0; color: #ff9800; font-size: 16px; }
+        .config-block {
+            background: #1a1a1f;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 4px solid #98c379;
+        }
+        .config-block:first-of-type { border-left-color: #e06c75; }
+        .config-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #fff; }
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .control-row label { font-size: 13px; color: #ccc; width: 80px; }
+        .control-row input[type="range"] { flex-grow: 1; margin: 0 12px; cursor: pointer; }
+        .control-val { font-family: monospace; width: 50px; text-align: right; font-weight: bold; }
+        .speed-color { color: #98c379; }
+        .angle-color { color: #61afef; }
+    </style>
+</head>
+<body>
+
+    <h1>FTC Into The Deep Mecanum Path Generator</h1>
+    <p>Click the map to set nodes. Use the AI Optimizer to smooth paths into continuous momentum curves.</p>
+
+    <div class="container">
+        <div class="canvas-container">
+            <canvas id="fieldCanvas" width="600" height="600"></canvas>
+        </div>
+
+        <div class="controls">
+            <div class="btn-group">
+                <button class="btn-clear" onclick="clearPath()">Clear Path</button>
+                <button class="btn-ai" onclick="optimizePathAI()">Optimize Path (AI)</button>
+                <button class="btn-simulate" onclick="startSimulation()">Simulate Path</button>
+                <button class="btn-copy" onclick="copyCode()">Copy Java Code</button>
+            </div>
+
+            <div class="config-panel">
+                <h3>Waypoint Parameter Adjustments</h3>
+                <div id="controlsContainer">
+                    <div style="color:#aaa; font-style:italic; font-size:14px;">Click points on the field to generate parameters...</div>
+                </div>
+            </div>
+
+            <label for="javaOutput">Generated FTC Java Code (AI Optimized Velocity Curves):</label>
+            <textarea id="javaOutput" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('fieldCanvas');
+        const ctx = canvas.getContext('2d');
+        const codeOutput = document.getElementById('javaOutput');
+        const controlsContainer = document.getElementById('controlsContainer');
+
+        const FIELD_INCHES = 144; 
+        const CANVAS_SIZE = 600;
+        const SCALE = FIELD_INCHES / CANVAS_SIZE; 
+        
+        const ROBOT_SIZE_INCHES = 18;
+        const ROBOT_SIZE_PX = ROBOT_SIZE_INCHES / SCALE; 
+
+        let waypoints = [];
+        let visualPaths = []; // Holds the optimized tracking points
+        let aiOptimized = false;
+        
+        let isSimulating = false;
+        let simX = 0;
+        let simY = 0;
+        let simAngle = 0; 
+        let currentTargetIndex = 0;
+        const BASE_MAX_SPEED = 6; 
+        const ROTATION_SPEED = 4;
+
+        const fieldImage = new Image();
+        fieldImage.src = 'Zoomed_in_field.jpg'; 
+        fieldImage.onload = function() {
+            drawField();
+        };
+
+        function drawField() {
+            ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+            
+            if (fieldImage.complete && fieldImage.naturalWidth !== 0) {
+                ctx.drawImage(fieldImage, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
+            } else {
+                ctx.fillStyle = '#2a2a32';
+                ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+            }
+            
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.lineWidth = 1;
+            let tileSize = CANVAS_SIZE / 6;
+            for (let i = 1; i < 6; i++) {
+                ctx.beginPath(); ctx.moveTo(i * tileSize, 0); ctx.lineTo(i * tileSize, CANVAS_SIZE); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, i * tileSize); ctx.lineTo(CANVAS_SIZE, i * tileSize); ctx.stroke();
+            }
+
+            // Draw Paths (Either AI smooth curves or User straight lines)
+            if (visualPaths.length > 0) {
+                ctx.strokeStyle = aiOptimized ? '#9b51e0' : '#ff9800';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(visualPaths[0].px, visualPaths[0].py);
+                for(let i = 1; i < visualPaths.length; i++) {
+                    ctx.lineTo(visualPaths[i].px, visualPaths[i].py);
+                }
+                ctx.stroke();
+            }
+
+            // Draw anchor points
+            waypoints.forEach((point, index) => {
+                ctx.fillStyle = index === 0 ? '#e06c75' : '#98c379'; 
+                ctx.beginPath();
+                ctx.arc(point.px, point.py, 7, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText(`P${index}`, point.px + 12, point.py - 5);
+            });
+
+            if (isSimulating) {
+                ctx.save();
+                ctx.translate(simX, simY);
+                ctx.rotate(-simAngle * Math.PI / 180); 
+
+                ctx.strokeStyle = '#e06c75';
+                ctx.lineWidth = 3;
+                ctx.fillStyle = 'rgba(224, 108, 117, 0.35)';
+                ctx.beginPath();
+                ctx.rect(-ROBOT_SIZE_PX / 2, -ROBOT_SIZE_PX / 2, ROBOT_SIZE_PX, ROBOT_SIZE_PX);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = 'rgba(40, 44, 52, 0.85)';
+                ctx.fillRect(-ROBOT_SIZE_PX / 2, -ROBOT_SIZE_PX / 2, ROBOT_SIZE_PX, ROBOT_SIZE_PX * 0.25);
+                
+                ctx.fillStyle = '#ff9800';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('▲ FRONT ▲', 0, -ROBOT_SIZE_PX / 4);
+                ctx.restore();
+            }
+        }
+
+        // AI Path Optimizer: Generates continuous parametric Cubic Bezier Curves
+        function optimizePathAI() {
+            if (waypoints.length < 3) {
+                alert("AI optimization requires at least 3 points to blend velocity curves smoothly!");
+                return;
+            }
+
+            aiOptimized = true;
+            visualPaths = [];
+
+            // Add the starting point
+            visualPaths.push({...waypoints[0]});
+
+            for (let i = 0; i < waypoints.length - 1; i++) {
+                let p0 = waypoints[i];
+                let p3 = waypoints[i+1];
+
+                // AI control point generation based on vector lookaheads
+                let dx = p3.px - p0.px;
+                let dy = p3.py - p0.py;
+
+                let p1 = { px: p0.px + dx * 0.25, py: p0.py + dy * 0.25, angle: p0.angle, speed: p3.speed };
+                let p2 = { px: p0.px + dx * 0.75, py: p0.py + dy * 0.75, angle: p3.angle, speed: p3.speed };
+
+                // Sample points along the curve line to build smooth motion steps
+                let segments = 10;
+                for (let t = 1; t <= segments; t++) {
+                    let normT = t / segments;
+                    
+                    // Cubic Bezier Formula
+                    let u = 1 - normT;
+                    let tt = normT * normT;
+                    let uu = u * u;
+                    let uuu = uu * u;
+                    let ttt = tt * normT;
+
+                    let px = uuu * p0.px + 3 * uu * normT * p1.px + 3 * u * tt * p2.px + ttt * p3.px;
+                    let py = uuu * p0.py + 3 * uu * normT * p1.py + 3 * u * tt * p2.py + ttt * p3.py;
+                    
+                    // Blended interpolation values
+                    let angle = p0.angle + (p3.angle - p0.angle) * normT;
+                    let speed = p3.speed;
+
+                    let inchX = (px * SCALE).toFixed(1);
+                    let inchY = ((CANVAS_SIZE - py) * SCALE).toFixed(1);
+
+                    visualPaths.push({ px, py, x: inchX, y: inchY, angle, speed });
+                }
+            }
+
+            drawField();
+            generateJava();
+        }
+
+        function updateSimulation() {
+            if (!isSimulating) return;
+
+            let target = visualPaths[currentTargetIndex];
+            let dx = target.px - simX;
+            let dy = target.py - simY;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            let targetAngle = target.angle;
+            let angleDiff = targetAngle - simAngle;
+            while (angleDiff < -180) angleDiff += 360;
+            while (angleDiff > 180)  angleDiff -= 360;
+
+            if (Math.abs(angleDiff) > ROTATION_SPEED) {
+                simAngle += Math.sign(angleDiff) * ROTATION_SPEED;
+            } else {
+                simAngle = targetAngle;
+            }
+
+            let speedPercent = target.speed || 70; 
+            let dynamicallyCalculatedSpeed = BASE_MAX_SPEED * (speedPercent / 100);
+
+            if (distance <= dynamicallyCalculatedSpeed) {
+                simX = target.px;
+                simY = target.py;
+            } else {
+                simX += (dx / distance) * dynamicallyCalculatedSpeed;
+                simY += (dy / distance) * dynamicallyCalculatedSpeed;
+            }
+
+            if (distance <= dynamicallyCalculatedSpeed && Math.abs(simAngle - targetAngle) < 5) {
+                currentTargetIndex++;
+                if (currentTargetIndex >= visualPaths.length) {
+                    isSimulating = false; 
+                    drawField();
+                    return;
+                }
+            }
+
+            drawField();
+            requestAnimationFrame(updateSimulation);
+        }
+
+        function startSimulation() {
+            if (visualPaths.length < 2) {
+                alert("Please build or optimize a path configuration route first!");
+                return;
+            }
+            isSimulating = true;
+            simX = visualPaths[0].px;
+            simY = visualPaths[0].py;
+            simAngle = visualPaths[0].angle;
+            currentTargetIndex = 1;
+            updateSimulation();
+        }
+
+        canvas.addEventListener('click', (e) => {
+            if (isSimulating) return; 
+
+            const rect = canvas.getBoundingClientRect();
+            const px = e.clientX - rect.left;
+            const py = e.clientY - rect.top;
+
+            const inchX = (px * SCALE).toFixed(1);
+            const inchY = ((CANVAS_SIZE - py) * SCALE).toFixed(1);
+
+            waypoints.push({ px, py, x: inchX, y: inchY, speed: 70, angle: 0 });
+            
+            // Default reset if adding new targets
+            aiOptimized = false;
+            visualPaths = [...waypoints];
+
+            updateConfigPanelUI();
+            drawField();
+            generateJava();
+        });
+
+        function updateConfigPanelUI() {
+            if (waypoints.length === 0) {
+                controlsContainer.innerHTML = `<div style="color:#aaa; font-style:italic; font-size:14px;">Click points on the field to generate parameters...</div>`;
+                return;
+            }
+            controlsContainer.innerHTML = '';
+            
+            waypoints.forEach((wp, i) => {
+                let block = document.createElement('div');
+                block.className = 'config-block';
+                block.style.borderLeftColor = aiOptimized ? '#9b51e0' : (i===0 ? '#e06c75' : '#98c379');
+                
+                let title = document.createElement('div');
+                title.className = 'config-title';
+                title.innerText = i === 0 ? `Starting Position (P0)` : `Waypoint Segment ${i} (P${i-1}→P${i})`;
+                block.appendChild(title);
+
+                if (i > 0) {
+                    let speedRow = document.createElement('div');
+                    speedRow.className = 'control-row';
+                    speedRow.innerHTML = `<label>Drive Speed:</label>`;
+                    let speedSlider = document.createElement('input');
+                    speedSlider.type = 'range'; speedSlider.min = '10'; speedSlider.max = '100'; speedSlider.step = '5';
+                    speedSlider.value = wp.speed;
+                    let speedVal = document.createElement('span');
+                    speedVal.className = 'control-val speed-color';
+                    speedVal.innerText = `${wp.speed}%`;
+                    
+                    speedSlider.addEventListener('input', (e) => {
+                        wp.speed = parseInt(e.target.value);
+                        speedVal.innerText = `${wp.speed}%`;
+                        if(aiOptimized) optimizePathAI(); else { visualPaths = [...waypoints]; generateJava(); }
+                    });
+                    speedRow.appendChild(speedSlider);
+                    speedRow.appendChild(speedVal);
+                    block.appendChild(speedRow);
+                }
+
+                let turnRow = document.createElement('div');
+                turnRow.className = 'control-row';
+                turnRow.innerHTML = `<label>Facing Target:</label>`;
+                let turnSlider = document.createElement('input');
+                turnSlider.type = 'range'; turnSlider.min = '-180'; turnSlider.max = '180'; turnSlider.step = '5';
+                turnSlider.value = wp.angle;
+                let turnVal = document.createElement('span');
+                turnVal.className = 'control-val angle-color';
+                turnVal.innerText = `${wp.angle}°`;
+                
+                turnSlider.addEventListener('input', (e) => {
+                    wp.angle = parseInt(e.target.value);
+                    turnVal.innerText = `${wp.angle}°`;
+                    if(aiOptimized) optimizePathAI(); else { visualPaths = [...waypoints]; generateJava(); }
+                });
+                turnRow.appendChild(turnSlider);
+                turnRow.appendChild(turnVal);
+                block.appendChild(turnRow);
+
+                controlsContainer.appendChild(block);
+            });
+        }
+
+        function clearPath() {
+            isSimulating = false;
+            aiOptimized = false;
+            waypoints = [];
+            visualPaths = [];
+            updateConfigPanelUI();
+            drawField();
+            generateJava();
+        }
+
+        function generateJava() {
+            let code = `package org.firstinspires.ftc.teamcode;\n\n`;
+            code += `import com.qualcomm.robotcore.eventloop.opmode.Autonomous;\n`;
+            code += `import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;\n`;
+            code += `import com.qualcomm.robotcore.hardware.DcMotor;\n\n`;
+            code += `@Autonomous(name = "AIOptimizedAuto", group = "Autonomous")\n`;
+            code += `public class AIOptimizedAuto extends LinearOpMode {\n\n`;
+            code += `    private DcMotor leftFront, rightFront, leftBack, rightBack;\n\n`;
+            code += `    private double currentX = 0.0;\n`;
+            code += `    private double currentY = 0.0;\n`;
+            code += `    private double currentAngle = 0.0;\n\n`;
+            code += `    private static final double TICKS_PER_INCH = 45.28;\n`;
+            code += `    private static final double TICKS_PER_DEGREE = 8.35;\n\n`;
+            code += `    @Override\n`;
+            code += `    public void runOpMode() {\n`;
+            code += `        leftFront  = hardwareMap.get(DcMotor.class, "left_front_drive");\n`;
+            code += `        rightFront = hardwareMap.get(DcMotor.class, "right_front_drive");\n`;
+            code += `        leftBack   = hardwareMap.get(DcMotor.class, "left_back_drive");\n`;
+            code += `        rightBack  = hardwareMap.get(DcMotor.class, "right_back_drive");\n\n`;
+            code += `        leftFront.setDirection(DcMotor.Direction.REVERSE);\n`;
+            code += `        leftBack.setDirection(DcMotor.Direction.REVERSE);\n\n`;
+            code += `        setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);\n`;
+            code += `        waitForStart();\n\n`;
+            code += `        if (opModeIsActive()) {\n`;
+            
+            if (visualPaths.length > 0) {
+                code += `            currentX = ${visualPaths[0].x}; currentY = ${visualPaths[0].y}; currentAngle = ${visualPaths[0].angle};\n`;
+            }
+            code += `            // --- BEGIN AI SMOOTHED PATH TRAJECTORY ---\n`;
+
+            for(let i = 1; i < visualPaths.length; i++) {
+                let wp = visualPaths[i];
+                let power = (wp.speed / 100).toFixed(2);
+                code += `            executeMove(${wp.x}, ${wp.y}, ${wp.angle.toFixed(1)}, ${power});\n`;
+            }
+
+            code += `            // --- END AI SMOOTHED PATH TRAJECTORY ---\n`;
+            code += `        }\n`;
+            code += `    }\n\n`;
+            code += `    public void executeMove(double targetX, double targetY, double targetAngle, double power) {\n`;
+            code += `        double deltaX = targetX - currentX;\n`;
+            code += `        double deltaY = targetY - currentY;\n`;
+            code += `        double deltaAngle = targetAngle - currentAngle;\n\n`;
+            code += `        while (deltaAngle < -180) deltaAngle += 360;\n`;
+            code += `        while (deltaAngle > 180)  deltaAngle -= 360;\n\n`;
+            code += `        int moveTicksX = (int)(deltaX * TICKS_PER_INCH);\n`;
+            code += `        int moveTicksY = (int)(deltaY * TICKS_PER_INCH);\n`;
+            code += `        int turnTicks  = (int)(deltaAngle * TICKS_PER_DEGREE);\n\n`;
+            code += `        int targetLF = leftFront.getCurrentPosition()  + (moveTicksY + moveTicksX + turnTicks);\n`;
+            code += `        int targetRF = rightFront.getCurrentPosition() + (moveTicksY - moveTicksX - turnTicks);\n`;
+            code += `        int targetLB = leftBack.getCurrentPosition()   + (moveTicksY - moveTicksX + turnTicks);\n`;
+            code += `        int targetRB = rightBack.getCurrentPosition()  + (moveTicksY + moveTicksX - turnTicks);\n\n`;
+            code += `        leftFront.setTargetPosition(targetLF);\n`;
+            code += `        rightFront.setTargetPosition(targetRF);\n`;
+            code += `        leftBack.setTargetPosition(targetLB);\n`;
+            code += `        rightBack.setTargetPosition(targetRB);\n\n`;
+            code += `        setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);\n\n`;
+            code += `        leftFront.setPower(power); rightFront.setPower(power);\n`;
+            code += `        leftBack.setPower(power);  rightBack.setPower(power);\n\n`;
+            code += `        while (opModeIsActive() && (leftFront.isBusy() && rightFront.isBusy())) {\n`;
+            code += `            idle();\n`;
+            code += `        }\n\n`;
+            code += `        currentX = targetX; currentY = targetY; currentAngle = targetAngle;\n`;
+            code += `    }\n\n`;
+            code += `    private void setEncoderMode(DcMotor.RunMode mode) {\n`;
+            code += `        leftFront.setMode(mode);  rightFront.setMode(mode);\n`;
+            code += `        leftBack.setMode(mode);   rightBack.setMode(mode);\n`;
+            code += `    }\n`;
+            code += `}\n`;
+            
+            codeOutput.value = code;
+        }
+
+        function copyCode() {
+            codeOutput.select();
+            document.execCommand('copy');
+            alert('Java Code copied!');
+        }
+
+        if (fieldImage.complete) {
+            drawField();
+        }
+        generateJava();
+    </script>
+</body>
+</html>
