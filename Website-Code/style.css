@@ -39,7 +39,7 @@ body{margin:0;font-family:'Orbitron','Comfortaa',sans-serif;background:linear-gr
   body{flex-direction:column}
 }
 
-.page-Headers{
+.mainPage-Headers{
   font-family: 'Orbitron', sans-serif;
   font-size: 75px;
   color: var(--gold);
