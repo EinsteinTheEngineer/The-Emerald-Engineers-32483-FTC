@@ -22,3 +22,4 @@ function startCountdown(targetDateStr, elemIdPrefix) {
   update();
   setInterval(update, 1000);
 }
+
