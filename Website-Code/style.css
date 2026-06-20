@@ -56,6 +56,7 @@ body{margin:0;font-family:'Orbitron','Comfortaa',sans-serif;background:var(--mut
 }
 
 .site-footer {
+  margin-top: 50px; 
   background-color: #e6f4e6;
   color: #004d00;
   padding: 40px 30px;
