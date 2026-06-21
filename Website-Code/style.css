@@ -5,7 +5,7 @@
   --emerald-light: #165c36;
   --gold: #E1A928;
   --gold-light: #eedbb0;
-  --ivory: #cfead2;
+  --ivory: #dceadd;
   --charcoal: #1C241E;
   --white: #ffffff;
 }
@@ -14,19 +14,31 @@
 *{box-sizing:border-box}
 body{
   margin:0;font-family:'Orbitron','Comfortaa',sans-serif;
-  background:var(--muted);
+  background:var(--ivory);
   color:var(--gold);
   min-height:100vh;display:flex
 }
 
-.sidebar{width:260px;background:linear-gradient(180deg,var(--offWhite));padding:24px;position:fixed;top:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;gap:18px}
+.sidebar{
+  width:260px;
+  background:linear-gradient(180deg,var(--white));
+  border-right: 1px solid rgba(11, 41, 18, 0.08);
+  padding:24px;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px}
 
 .brand{color:var(--muted);text-align:center;font-size:14px;margin-top:4px}
 
 .nav{width:100%;margin-top:6px}
 .nav a{display:block;color:var(--gold);text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:700}
 .nav a:hover{background:rgba(255,255,255,0.03);color:#fff}
-.nav a.active{background:linear-gradient(90deg,var(--emerald-light),var(--emerald-mid));color:#fff}
+.nav a.active{background:linear-gradient(90deg,var(--gold-light));color:#fff}
 
 .container{margin-left:260px;padding:36px;flex:1;display:flex;flex-direction:column;min-height:100vh}
 
@@ -85,4 +97,59 @@ body{
   border-radius: 20px;
   box-shadow: 0 -2px 10px rgba(0, 64, 0, 0.1);
   word-wrap: break-word;
+}
+
+/* Hide the mobile header completely on computer screens */
+.mobile-header {
+  display: none;
+}
+
+/* Media Query: Rules that only apply to mobile devices/small screens */
+@media (max-width: 768px) {
+  
+  /* 1. Make the top mobile bar visible */
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0B2912; /* Your Midnight Emerald */
+    color: #FFFFFF;
+    padding: 15px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2000; /* Keeps it on top of everything */
+  }
+
+  .hamburger-btn {
+    background: none;
+    border: none;
+    color: #E1A928; /* Your Team Gold */
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  /* 2. Hide the sidebar completely off the left side of the screen */
+  .sidebar {
+    position: fixed;
+    top: 60px; /* Sits directly below the mobile header bar */
+    left: -100%; /* Pushes it totally off-screen to the left */
+    width: 100%; /* Makes it full width on mobile */
+    height: calc(100vh - 60px);
+    z-index: 1999;
+    transition: left 0.3s ease-in-out; /* Smooth slide animation! */
+  }
+
+  /* 3. This class will slide the sidebar back into view when active */
+  .sidebar.active {
+    left: 0;
+  }
+
+  /* 4. Fix the main page content layout so it fills the screen on mobile */
+  .container {
+    margin-left: 0 !important;
+    padding: 90px 20px 40px 20px !important; /* Prevents content hiding under mobile header */
+    width: 100% !important;
+  }
 }

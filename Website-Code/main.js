@@ -23,3 +23,23 @@ function startCountdown(targetDateStr, elemIdPrefix) {
   setInterval(update, 1000);
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.querySelector('.sidebar');
+
+  // Check to make sure both elements exist on the page
+  if (menuToggle && sidebar) {
+    menuToggle.addEventListener('click', () => {
+      
+      // Toggles the .active class on or off every time you click
+      sidebar.classList.toggle('active');
+      
+      // Changes the icon to an '✕' when open, and back to '☰' when closed
+      if (sidebar.classList.contains('active')) {
+        menuToggle.innerHTML = '✕';
+      } else {
+        menuToggle.innerHTML = '☰';
+      }
+    });
+  }
+});
