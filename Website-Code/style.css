@@ -1,18 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap');
 :root{
-  --emerald-dark: #012F12;
-  --emerald-mid: #0d3f1f;
+  --midnight-emerald: #0B2912;
   --emerald-light: #165c36;
-  --gold-dark: #8c6b00;
-  --gold: #b8860b;
-  --muted: #cfead2;
-  --offWhite: #f5f5f5;
+  --gold: #E1A928;
+  --gold-light: #eedbb0;
+  --ivory: #cfead2;
+  --charcoal: #1C241E;
+  --white: #ffffff;
 }
+
+
 *{box-sizing:border-box}
 body{margin:0;font-family:'Orbitron','Comfortaa',sans-serif;background:var(--muted);color:var(--gold);min-height:100vh;display:flex}
 .sidebar{width:260px;background:linear-gradient(180deg,var(--offWhite));padding:24px;position:fixed;top:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;gap:18px}
-.sidebar img.logo{max-width:160px;height:auto;border-radius:8px}
 .brand{color:var(--muted);text-align:center;font-size:14px;margin-top:4px}
 .nav{width:100%;margin-top:6px}
 .nav a{display:block;color:var(--gold);text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:700}
@@ -20,7 +21,7 @@ body{margin:0;font-family:'Orbitron','Comfortaa',sans-serif;background:var(--mut
 .nav a.active{background:linear-gradient(90deg,var(--emerald-light),var(--emerald-mid));color:#fff}
 .container{margin-left:260px;padding:36px;flex:1;display:flex;flex-direction:column;min-height:100vh}
 .header-badge{display:inline-block;background:rgba(255,255,255,0.03);padding:6px 12px;border-radius:999px;color:var(--muted);font-weight:700}
-.hero{padding:30px;border-radius:12px;background:var(--emerald-dark);box-shadow:0 8px 30px rgba(0,0,0,0.6);margin-bottom:20px}
+.hero{padding:30px;border-radius:12px;background:var(--midnight-emerald);box-shadow:0 8px 30px rgba(0,0,0,0.6);margin-bottom:20px}
 .hero h1{font-size:44px;margin:8px 0 12px;color:var(--gold)}
 .lead{color:var(--muted);max-width:800px}
 .buttons{display:flex;gap:12px;margin-top:18px}
@@ -36,7 +37,6 @@ body{margin:0;font-family:'Orbitron','Comfortaa',sans-serif;background:var(--mut
 /* responsive */
 @media (max-width:900px){
   .sidebar{position:relative;width:100%;height:auto;flex-direction:row;justify-content:space-between;padding:12px}
-  .sidebar img.logo{max-width:100px}
   .container{margin-left:0;padding:18px}
   body{flex-direction:column}
 }
