@@ -278,7 +278,7 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  
+
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -305,4 +305,22 @@ body {
   border-radius: 20px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
   word-wrap: break-word;
+}
+
+/* ==========================================================================
+   RESPONSIVE EMBEDDED FORM
+   ========================================================================== */
+.form-container {
+  width: 100%;
+  max-width: 700px; /* Keeps the form from stretching too wide on desktops */
+  margin: 20px auto; /* Centers the form on the page */
+  background: var(--charcoal);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.form-container iframe {
+  border: none;
+  display: block;
 }
