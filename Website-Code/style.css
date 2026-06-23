@@ -37,7 +37,7 @@ background-color: var(--ivory);
     /* LINE 4: Sweeping up from the bottom left */
     radial-gradient(circle at 30% 110%, transparent 450px, color-mix(in srgb, var(--gold) 14%, transparent) 450px, color-mix(in srgb, var(--charcoal) 14%, transparent) 452px, transparent 452px),
     /* LINE 5: A tighter curve coming from the middle right */
-    radial-gradient(circle at 95% 40%, transparent 250px, color-mix(in srgb, var(--gold) 10%, transparent) 250px, color-mix(in srgb, var(--charcoal) 10%, transparent) 252px, transparent 252px);
+    radial-gradient(circle at 95% 40%, transparent 250px, color-mix(in srgb, var(--gold) 10%, transparent) 250px, color-mix(in srgb, var(--charcoal) 10%, transparent) 252px, transparent 252px),
     radial-gradient(circle at 75% 20%, transparent 350px, color-mix(in srgb, var(--gold) 10%, transparent) 350px, color-mix(in srgb, var(--gold-light) 10%, transparent) 352px, transparent 352px);
   background-size: 140% 140%;
   background-attachment: fixed;
