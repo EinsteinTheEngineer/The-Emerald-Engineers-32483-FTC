@@ -418,3 +418,141 @@ background-color: var(--ivory);
   border: none;
   display: block;
 }
+
+
+/* ==========================================================================
+   Team Page Card Layout & Styling
+   ========================================================================== */
+
+/* Team Section Framework */
+.team-header-text {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.team-header-text h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  color: #004d00;
+  margin-bottom: 5px;
+}
+
+.team-header-text h4 {
+  font-weight: normal;
+  color: #006400;
+  margin: 0;
+}
+
+/* 3-Column Desktop Grid Configuration */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Forms exactly 3 items per row */
+  gap: 25px;
+  margin-bottom: 60px;
+}
+
+/* Card Styling */
+.member-card {
+  background-color: var(--gold-light); /* Your Light Green/Cream */
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 64, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.member-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  color: #004d00;
+  margin: 0 0 4px 0;
+}
+
+.member-role {
+  font-size: 13px;
+  color: #006400;
+  margin: 0 0 16px 0;
+  font-weight: 600;
+  line-height: 1.4;
+  min-height: 36px; /* Ensures text alignment stays level even if roles differ in length */
+}
+
+/* Photo Configurations */
+.member-image-container {
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  border: 3px solid #006400;
+}
+
+.member-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Summary Memo Dropdowns */
+.bio-dropdown {
+  width: 100%;
+  margin-top: auto; /* Pushes the dropdown bar exactly to the bottom of the card */
+  border-top: 1px solid rgba(0, 77, 0, 0.15);
+  padding-top: 12px;
+}
+
+.bio-summary {
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 14px;
+  color: #004d00;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none; /* Removes native system arrow indicators */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.bio-summary::-webkit-details-marker {
+  display: none; /* Hide arrow on Safari browsers */
+}
+
+.bio-summary::after {
+  content: ' ▾';
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.bio-dropdown[open] .bio-summary::after {
+  transform: rotate(180deg); /* Flips arrow up when reading bio */
+}
+
+.bio-content {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 12px;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto; /* Adds custom internal scrolling if bios are exceptionally long */
+}
+
+/* Responsiveness adjustments for smaller browser screens */
+@media (max-width: 992px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+  }
+}
+
+@media (max-width: 650px) {
+  .team-grid {
+    grid-template-columns: 1fr; /* Single column stack on phones */
+  }
+}
