@@ -29,33 +29,53 @@ body {
 
 background-color: var(--ivory); 
   
-  /* 5 Overlapping abstract line layers */
+  /* Perfectly balanced line grid coordinates (Mirrored across left and right halves) */
   background-image: 
-    radial-gradient(circle at 10% 10%, transparent 500px, color-mix(in srgb, var(--gold) 15%, transparent) 500px, color-mix(in srgb, var(--charcoal) 15%, transparent) 503px, transparent 503px),
-    radial-gradient(circle at 90% 80%, transparent 400px, color-mix(in srgb, var(--gold) 12%, transparent) 400px, color-mix(in srgb, var(--charcoal) 12%, transparent) 404px, transparent 404px),
-    radial-gradient(circle at 80% -10%, transparent 300px, color-mix(in srgb, var(--gold) 12%, transparent) 300px, color-mix(in srgb, var(--emerald-light) 12%, transparent) 403px, transparent 403px),
-    /* LINE 4: Sweeping up from the bottom left */
-    radial-gradient(circle at 30% 110%, transparent 450px, color-mix(in srgb, var(--gold) 14%, transparent) 450px, color-mix(in srgb, var(--charcoal) 14%, transparent) 452px, transparent 452px),
-    /* LINE 5: A tighter curve coming from the middle right */
-    radial-gradient(circle at 95% 40%, transparent 250px, color-mix(in srgb, var(--gold) 10%, transparent) 250px, color-mix(in srgb, var(--charcoal) 10%, transparent) 252px, transparent 252px),
-    radial-gradient(circle at 75% 20%, transparent 350px, color-mix(in srgb, var(--gold) 10%, transparent) 350px, color-mix(in srgb, var(--gold-light) 10%, transparent) 352px, transparent 352px);
-  background-size: 140% 140%;
-  background-attachment: fixed;
+    /* ---- THE TECH HEXAGONS WALLPAPER GRID ---- */
+    /*linear-gradient(30deg, color-mix(in srgb, var(--charcoal) 4%, transparent) 25%, transparent 25%, transparent 75%, color-mix(in srgb, var(--charcoal) 4%, transparent) 75%),
+    linear-gradient(150deg, color-mix(in srgb, var(--charcoal) 4%, transparent) 25%, transparent 25%, transparent 75%, color-mix(in srgb, var(--charcoal) 4%, transparent) 75%),
+    linear-gradient(30deg, color-mix(in srgb, var(--charcoal) 2%, transparent) 25%, transparent 25%, transparent 75%, color-mix(in srgb, var(--charcoal) 2%, transparent) 75%),
+    linear-gradient(150deg, color-mix(in srgb, var(--charcoal) 2%, transparent) 25%, transparent 25%, transparent 75%, color-mix(in srgb, var(--charcoal) 2%, transparent) 75%),*/
+
+    /* ---- BALANCED BACKGROUND LINES ---- */
+    radial-gradient(circle at 15% 25%, transparent 400px, color-mix(in srgb, var(--charcoal) 15%, transparent) 400px, color-mix(in srgb, var(--gold) 15%, transparent) 403px, transparent 403px),
+    radial-gradient(circle at 85% 75%, transparent 350px, color-mix(in srgb, var(--charcoal) 12%, transparent) 350px, color-mix(in srgb, var(--charcoal) 12%, transparent) 404px, transparent 404px),
+    radial-gradient(circle at 85% 25%, transparent 250px, color-mix(in srgb, var(--gold-light) 12%, transparent) 250px, color-mix(in srgb, var(--charcoal) 12%, transparent) 353px, transparent 353px),
+    radial-gradient(circle at 15% 75%, transparent 350px, color-mix(in srgb, var(--charcoal) 14%, transparent) 350px, color-mix(in srgb, var(--charcoal) 14%, transparent) 352px, transparent 352px),
+    radial-gradient(circle at 75% 45%, transparent 200px, color-mix(in srgb, var(--gold) 10%, transparent) 200px, color-mix(in srgb, var(--gold-light) 10%, transparent) 252px, transparent 252px),
+    radial-gradient(circle at 25% 45%, transparent 200px, color-mix(in srgb, var(--charcoal) 10%, transparent) 200px, color-mix(in srgb, var(--charcoal) 10%, transparent) 252px, transparent 252px),
+    radial-gradient(circle at 50% 15%, transparent 450px, color-mix(in srgb, var(--midnight-emerald) 13%, transparent) 450px, color-mix(in srgb, var(--midnight-emerald) 13%, transparent) 453px, transparent 453px),
+    radial-gradient(circle at 50% 85%, transparent 250px, color-mix(in srgb, var(--charcoal) 11%, transparent) 250px, color-mix(in srgb, var(--charcoal) 11%, transparent) 253px, transparent 253px);
   
-  animation: driftWaves 20s ease-in-out infinite alternate; /* Slightly slowed down to 25s to keep it elegant with more lines */
+  background-size: 
+    80px 140px, 80px 140px,       
+    40px 70px, 40px 70px,         
+    140% 140%, 140% 140%, 140% 140%, 140% 140%, 140% 140%, 140% 140%, 140% 140%, 140% 140%; 
+  
+  background-attachment: fixed;
+  animation: driftWaves 35s ease-in-out infinite alternate;
 }
 
-/* UPDATED TIMELINE: Handles the movement for all 5 layers independently */
+
+/* MASTER TIMELINE: Moves lines and shifts the hexagon patterns independently */
 @keyframes driftWaves {
   0% {
-    background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    background-position: 
+      0px 0px, 40px 70px, 
+      0px 0px, 20px 35px, 
+      0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
   }
   50% {
-    /* Shifts them across different axes so the lines cross over each other like waves */
-    background-position: 10% 15%, -5% 10%, 8% -5%, -12% 8%, 5% 15%;
+    background-position: 
+      30px 40px, 70px 110px, 
+      -15px 20px, 5px 55px, 
+      8% 12%, -6% 8%, 5% -7%, -10% 6%, 4% 12%, -8% -10%, 10% -5%, -5% 15%;
   }
   100% {
-    background-position: -5% -10%, 12% -5%, -10% 12%, 10% -12%, -8% -5%;
+    background-position: 
+      -20px -50px, 20px 20px, 
+      25px -30px, 45px 5px, 
+      -4% -8%, 10% -4%, -8% 10%, 8% -10%, -6% -4%, 6% 8%, -4% 10%, 8% -6%;
   }
 }
 
@@ -604,4 +624,65 @@ background-color: var(--ivory);
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ==========================================================================
+   FLOATING GRADIENT GOLD HEXAGONS 
+   ========================================================================== */
+.floating-shapes-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; 
+  z-index: -1; /* FIXED: Pushes them safely behind your cards and text contents */
+  overflow: hidden;
+}
+
+.float-hex {
+  position: absolute;
+  /* FIXED: Applies the gradient layout defined inside the JS vector maps */
+  fill: url(#goldGradient) !important; 
+  stroke: none !important;
+  opacity: 0.85 !important; /* Elegant semi-transparent visibility */
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1));
+}
+
+/* 2 Hexagons on the left, 1 Hexagon on the right */
+.hex-1 {
+  width: 180px;
+  top: 15%;
+  left: 5%;     /* Left Side Lane */
+  animation: floatGeometric-1 25s ease-in-out infinite alternate !important;
+}
+
+.hex-2 {
+  width: 130px;
+  top: 55%;
+  left: 10%;    /* Left Side Lane (Lower down) */
+  animation: floatGeometric-2 18s ease-in-out infinite alternate !important;
+}
+
+.hex-3 {
+  width: 160px;
+  top: 35%;
+  left: 85%;    /* Right Side Lane */
+  animation: floatGeometric-3 22s ease-in-out infinite alternate !important;
+}
+
+/* FIXED: Added the explicit geometric translation paths to make them move */
+@keyframes floatGeometric-1 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(40px, -50px) rotate(45deg); }
+}
+
+@keyframes floatGeometric-2 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-30px, 40px) rotate(-60deg); }
+}
+
+@keyframes floatGeometric-3 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(50px, 30px) rotate(30deg); }
 }
