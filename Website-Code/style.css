@@ -31,18 +31,18 @@ background-color: var(--ivory);
   
   /* 5 Overlapping abstract line layers */
   background-image: 
-    radial-gradient(circle at 10% 10%, transparent 500px, color-mix(in srgb, var(--charcoal) 15%, transparent) 500px, color-mix(in srgb, var(--charcoal) 15%, transparent) 503px, transparent 503px),
-    radial-gradient(circle at 90% 80%, transparent 400px, color-mix(in srgb, var(--charcoal) 12%, transparent) 400px, color-mix(in srgb, var(--charcoal) 12%, transparent) 404px, transparent 404px),
-    radial-gradient(circle at 80% -10%, transparent 300px, color-mix(in srgb, var(--charcoal) 12%, transparent) 300px, color-mix(in srgb, var(--charcoal) 12%, transparent) 403px, transparent 403px),
+    radial-gradient(circle at 10% 10%, transparent 500px, color-mix(in srgb, var(--gold) 15%, transparent) 500px, color-mix(in srgb, var(--charcoal) 15%, transparent) 503px, transparent 503px),
+    radial-gradient(circle at 90% 80%, transparent 400px, color-mix(in srgb, var(--gold) 12%, transparent) 400px, color-mix(in srgb, var(--charcoal) 12%, transparent) 404px, transparent 404px),
+    radial-gradient(circle at 80% -10%, transparent 300px, color-mix(in srgb, var(--gold) 12%, transparent) 300px, color-mix(in srgb, var(--emerald-light) 12%, transparent) 403px, transparent 403px),
     /* LINE 4: Sweeping up from the bottom left */
-    radial-gradient(circle at 30% 110%, transparent 450px, color-mix(in srgb, var(--charcoal) 14%, transparent) 450px, color-mix(in srgb, var(--charcoal) 14%, transparent) 452px, transparent 452px),
+    radial-gradient(circle at 30% 110%, transparent 450px, color-mix(in srgb, var(--gold) 14%, transparent) 450px, color-mix(in srgb, var(--charcoal) 14%, transparent) 452px, transparent 452px),
     /* LINE 5: A tighter curve coming from the middle right */
-    radial-gradient(circle at 95% 40%, transparent 250px, color-mix(in srgb, var(--charcoal) 10%, transparent) 250px, color-mix(in srgb, var(--charcoal) 10%, transparent) 252px, transparent 252px);
-  
+    radial-gradient(circle at 95% 40%, transparent 250px, color-mix(in srgb, var(--gold) 10%, transparent) 250px, color-mix(in srgb, var(--charcoal) 10%, transparent) 252px, transparent 252px);
+    radial-gradient(circle at 75% 20%, transparent 350px, color-mix(in srgb, var(--gold) 10%, transparent) 350px, color-mix(in srgb, var(--gold-light) 10%, transparent) 352px, transparent 352px);
   background-size: 140% 140%;
   background-attachment: fixed;
   
-  animation: driftWaves 25s ease-in-out infinite alternate; /* Slightly slowed down to 25s to keep it elegant with more lines */
+  animation: driftWaves 20s ease-in-out infinite alternate; /* Slightly slowed down to 25s to keep it elegant with more lines */
 }
 
 /* UPDATED TIMELINE: Handles the movement for all 5 layers independently */
