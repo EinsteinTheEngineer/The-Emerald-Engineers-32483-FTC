@@ -61,6 +61,11 @@ body {
   justify-content: center;
   transition: background-color 0.2s ease, color 0.2s ease;
   padding: 0;
+
+  position: relative; 
+  z-index: 3100;     
+  
+  transition: transform 0.3s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
 .hamburger-btn:hover {
@@ -114,6 +119,16 @@ body {
   z-index: 1999;
   transition: left 0.3s ease-in-out; /* Smooth sliding drawer effect */
   box-shadow: 5px 0 15px rgba(0, 0, 0, 0.05);
+
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  height: 100vh;            
+  top: 0;                  
+  z-index: 3000;            
+  
+  border-radius: 0 20px 20px 0;
+  overflow: hidden;
 }
 
 /* Slides the drawer into view when JS toggles the active class */

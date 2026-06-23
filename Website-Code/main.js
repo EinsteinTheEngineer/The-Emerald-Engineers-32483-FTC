@@ -25,21 +25,20 @@ function startCountdown(targetDateStr, elemIdPrefix) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.querySelector('.sidebar');
+const sidebar = document.querySelector('.sidebar');
 
-  // Check to make sure both elements exist on the page
-  if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', () => {
-      
-      // Toggles the .active class on or off every time you click
-      sidebar.classList.toggle('active');
-      
-      // Changes the icon to an '✕' when open, and back to '☰' when closed
-      if (sidebar.classList.contains('active')) {
-        menuToggle.innerHTML = '✕';
-      } else {
-        menuToggle.innerHTML = '☰';
-      }
-    });
+menuToggle.addEventListener('click', () => {
+  // Toggle the active class on the sidebar to slide it in/out
+  sidebar.classList.toggle('active');
+  
+  // Toggle the open class on the button to trigger the CSS rotation
+  menuToggle.classList.toggle('open');
+  
+  // Swap the icon character based on whether the menu is open or closed
+  if (sidebar.classList.contains('active')) {
+    menuToggle.textContent = '✕'; // Elegant close icon
+  } else {
+    menuToggle.textContent = '☰'; // Standard hamburger icon
   }
+});
 });
