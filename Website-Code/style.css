@@ -21,6 +21,9 @@
 body {
   margin: 0;
   font-family: 'Orbitron', 'Comfortaa', sans-serif;
+  p{
+    font-family: 'Comfortaa', sans-serif;
+  }
   background: var(--ivory);
   color: var(--gold);
   min-height: 100vh;
@@ -77,6 +80,13 @@ background-color: var(--ivory);
       25px -30px, 45px 5px, 
       -4% -8%, 10% -4%, -8% 10%, 8% -10%, -6% -4%, 6% 8%, -4% 10%, 8% -6%;
   }
+}
+
+.countdownSubheading {
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 16px;
+  color: var(--charcoal);
+  font-weight: 700;
 }
 
 /* ==========================================================================
