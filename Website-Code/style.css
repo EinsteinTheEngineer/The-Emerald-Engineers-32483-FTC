@@ -360,6 +360,8 @@ background-color: var(--ivory);
   padding: 16px;
   border-radius: 10px;
   color: var(--white);
+  h3 { font-family: 'Orbitron', sans-serif; }
+  p { font-family: 'Comfortaa', sans-serif; }
 }
 
 
