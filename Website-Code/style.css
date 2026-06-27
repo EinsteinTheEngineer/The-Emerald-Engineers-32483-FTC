@@ -951,7 +951,7 @@ p a:hover {
   line-height: 1.5;
 }
 
-.heroicImage {
+.heroicImageLeft {
   width: 400px;       
   height: 400px;
   margin-left: 20px;  
@@ -961,14 +961,34 @@ p a:hover {
   
   padding: 30px;         
   overflow: hidden;  
+
 }
 
-.heroicImage img {
+.heroicImageRight {
+  width: 400px;       
+  height: 400px;
+  margin-right: 20px;  
+  border-radius: 12px;
+  background: var(--midnight-emerald);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  
+  padding: 30px;         
+  overflow: hidden;  
+}
+
+.heroicImageRight img {
   width: 100%;
   height: 100%;
   object-fit: cover;  
   border-radius: 8px;
 } 
+
+.heroicImageLeft img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  
+  border-radius: 8px;
+}
 
 
 /* ==========================================================================
@@ -980,21 +1000,40 @@ p a:hover {
   .about-row {
     flex-direction: column;
     align-items: stretch; 
+    gap: 20px; 
+  }
+
+  .about-row:has(.heroicImageLeft) {
+    flex-direction: column-reverse;
   }
 
   .heroic {
     width: 100%;        
-    margin-bottom: 20px; 
+    margin: 0; 
   }
 
-  .heroicImage {
+  .heroicImageLeft,
+  .heroicImageRight {
     width: 100%;        
-    height: 400px;      
-    margin-left: 0;     
+    height: 350px; 
+    margin: 0;     
   }
 }
 
-
 .underline {
   text-decoration: underline;
+}
+
+/* ==========================================================================
+   MISSION STATEMENT PAGE STYLES
+   ========================================================================== */
+
+.savior {
+  padding: 30px;
+  border-radius: 12px;
+  background: var(--midnight-emerald);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); 
+  height: 250px;
+  width: 500px;
+  box-sizing: border-box; 
 }
