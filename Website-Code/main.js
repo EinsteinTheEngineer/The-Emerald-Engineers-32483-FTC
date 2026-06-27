@@ -38,3 +38,25 @@ sidebarClose.addEventListener('click', () => {
   sidebar.classList.remove('active');
 });
 });
+
+let currentSlide = 0;
+
+function moveSlide(direction) {
+  const slides = document.querySelectorAll('.carousel-slide img');
+  
+  // Remove the active class from the current image
+  slides[currentSlide].classList.remove('active');
+  
+  // Calculate the next image index
+  currentSlide += direction;
+  
+  // Loop back around if you reach the end or the beginning
+  if (currentSlide >= slides.length) {
+    currentSlide = 0;
+  } else if (currentSlide < 0) {
+    currentSlide = slides.length - 1;
+  }
+  
+  // Add the active class to the new image
+  slides[currentSlide].classList.add('active');
+}
