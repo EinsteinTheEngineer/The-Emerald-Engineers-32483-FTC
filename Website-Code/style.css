@@ -1340,3 +1340,45 @@ p a:hover {
   }
   }
 }
+
+/* ==========================================================================
+   Outreach Page Sytling
+   ========================================================================== */
+
+/*==================================== Outreach Title ======================================*/
+/* Finished with heroic styling class in html...
+
+
+/*==================================== Resource Blog Page ======================================*/
+
+.blogblob-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.blogblob-text{
+  width: 1120px;
+  height: 300px;
+  padding: 40px;
+  box-sizing: border-box;
+  background: var(--midnight-emerald);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.blogblob-text h3 {
+  font-family: Orbitron, sans-serif;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+
+.blogblob-text p {
+  font-family: Comfortaa, sans-serif;
+  color: var(--ivory);
+  line-height: 1.6;
+}
