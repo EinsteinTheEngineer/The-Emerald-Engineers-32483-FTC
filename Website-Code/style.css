@@ -1042,7 +1042,7 @@ p a:hover {
 
 .mentorship-text {
   width: 400px;
-  height: 400px; /* Equal width and height makes it a perfect square */
+  height: 400px; 
   padding: 40px;
   box-sizing: border-box;
   background: var(--midnight-emerald);
@@ -1081,15 +1081,14 @@ p a:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;         /* Hide all images by default */
-  transition: opacity 0.5s ease-in-out; /* Smooth fade effect */
+  opacity: 0;         
+  transition: opacity 0.5s ease-in-out; 
 }
 
 .carousel-slide img.active {
   opacity: 1;
 }
 
-/* Navigation Buttons */
 .carousel-btn {
   position: absolute;
   top: 50%;
@@ -1102,6 +1101,7 @@ p a:hover {
   font-size: 18px;
   border-radius: 4px;
   transition: background 0.3s;
+  z-index: 10;
 }
 
 .carousel-btn:hover {
@@ -1112,28 +1112,12 @@ p a:hover {
 .prev { left: 10px; }
 .next { right: 10px; }
 
-@media (max-width: 1050px) {
-  .mentorship-section {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .mentorship-text, .carousel-container {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1; 
-  }
-  .carousel-container {
-    aspect-ratio: 3 / 2; 
-  }
-}
-
 /*==================================== FLL to FTC Section ======================================*/
-
 .FLLFTC-section {
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .FLLFTC-text {
@@ -1146,7 +1130,7 @@ p a:hover {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  align-items: left;
+  justify-content: center;
 }
 
 .FLLFTC-text h3 {
@@ -1164,18 +1148,21 @@ p a:hover {
 .FLLFTC-image {
   width: 550px;
   height: 450px; 
-  padding: 40px;
+  padding: 0; 
   box-sizing: border-box;
   background: var(--midnight-emerald);
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  display: flex;
-  flex-direction: column;
-  align-items: left;
+  overflow: hidden;
+}
+
+.FLLFTC-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /*==================================== FIRST Community ======================================*/
-
 .community-section {
   display: flex;
   align-items: center;
@@ -1192,8 +1179,8 @@ p a:hover {
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  align-items: left;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15)
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
 .community-text h3 {
@@ -1211,22 +1198,145 @@ p a:hover {
 .community-image {
   width: 300px;
   height: 350px; 
-  padding: 40px;
+  padding: 0; 
   box-sizing: border-box;
   background: var(--midnight-emerald);
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  display: flex;
-  flex-direction: column;
-  align-items: left;
+  overflow: hidden;
 }
 
 .community-image img {
-  margin-bottom: 45px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /*==================================== Innovation ======================================*/
+.innovation-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
 
 .innovation {
-  
+  width: 1120px;
+  height: 220px;
+  padding: 40px;
+  box-sizing: border-box;
+  background: var(--midnight-emerald);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.innovation h3 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+
+.innovation p {
+  font-family: 'Comfortaa', sans-serif;
+  color: var(--ivory);
+  line-height: 1.6;
+}
+
+/*==================================== Looking Ahead ======================================*/
+.lookingahead-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.lookingahead-text {
+  width: 700px;
+  height: 350px;
+  padding: 40px;
+  box-sizing: border-box;
+  background: var(--midnight-emerald);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.lookingahead-text h3 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+
+.lookingahead-text p {
+  font-family: 'Comfortaa', sans-serif;
+  color: var(--ivory);
+  line-height: 1.6;
+}
+
+.lookingahead-image {
+  width: 400px;
+  height: 350px; 
+  padding: 0; /* Clean edge boundaries for image framework */
+  box-sizing: border-box;
+  background: var(--midnight-emerald);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.lookingahead-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (PHONES & TABLETS)
+   ========================================================================== */
+
+@media (max-width: 1150px) {
+
+  .mentorship-section,
+  .FLLFTC-section,
+  .community-section,
+  .innovation-section,
+  .lookingahead-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px; 
+
+  .mentorship-text,
+  .FLLFTC-text,
+  .community-text,
+  .innovation,
+  .lookingahead-text {
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+  }
+
+  .mentorship-text {
+    aspect-ratio: 1 / 1; 
+  }
+
+  .carousel-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2; 
+  }
+
+  .FLLFTC-image,
+  .community-image,
+  .lookingahead-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2; 
+  }
+  }
 }
