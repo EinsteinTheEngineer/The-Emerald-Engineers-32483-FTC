@@ -1360,7 +1360,7 @@ p a:hover {
 
 .blogblob-text{
   width: 1120px;
-  height: 300px;
+  height: 200px;
   padding: 40px;
   box-sizing: border-box;
   background: var(--midnight-emerald);
@@ -1371,10 +1371,10 @@ p a:hover {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
-.blogblob-text h3 {
+.blogblob-text h3 a {
   font-family: Orbitron, sans-serif;
   color: var(--gold);
-  margin-bottom: 5px;
+  font-size: 20px;
 }
 
 .blogblob-text p {
