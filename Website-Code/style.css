@@ -1496,20 +1496,24 @@ p a:hover {
    ========================================================================== */
 
 .article-hub {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1120px; 
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 0;   
+  box-sizing: border-box;
 }
 
 .category-section {
+  height: 340px;
   margin-bottom: 30px;
 }
 
 .category-title {
   font-family: 'Orbitron', sans-serif;
-  color: var(--gold);
+  color: var(--charcoal);
   font-size: 24px;
   margin-bottom: 15px;
+  margin-top: 30px;
 }
 
 /*==================================== The Horizontal Scroll Engine ======================================*/
@@ -1520,7 +1524,14 @@ p a:hover {
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 15px;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: var(--gold-light);
+  border-radius: 12px;
+  scrollbar-width: none;
   scroll-behavior: smooth;
+  margin-bottom: 30px;
 }
 
 .scroll-container::-webkit-scrollbar-track {
@@ -1533,3 +1544,92 @@ p a:hover {
   border: 1px solid var(--gold);
   border-radius: 10px;
 }
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/*==================================== 300x300 Square Article Cards ======================================*/
+
+.article-card {
+  flex-shrink: 0;
+  width: 300px;
+  height: 300px;
+  padding: 30px;
+  box-sizing: border-box;
+  background: var(--midnight-emerald);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+  box-shadow 0.3s ease;
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--gold);
+}
+
+.article-card h3 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--gold);
+  font-size: 18px;
+  line-height: 1.4px;
+  margin-bottom: 0x;
+}
+
+.card-date {
+  font-family: 'Comfortaa', sans-serif;
+  width: fit-content;
+  color: var(--charcoal);
+  font-size: 12px;
+  opacity: 0.8;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold));
+  border-radius: 999px;
+  display: inline-block;
+  padding: 6px 12px;
+}
+
+.category-row-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: transalateY(-50%);
+  width: 45px;
+  height: 45px;
+  background: var(--midnight-emerald);
+  border: 1px solidvar(--gold);
+  color: var(--ivory);
+  font-size: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.nav-btn:hover {
+  background: var(--gold);
+  color: var(--midnight-emerald);
+  transform: transalateY(-50%) scale(1.1);
+}
+
+.prev-btn {
+  left: -22px;
+}
+
+.next-btn {
+  right: -22px;
+}
+

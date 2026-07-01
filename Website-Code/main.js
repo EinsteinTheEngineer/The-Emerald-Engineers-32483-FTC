@@ -60,3 +60,15 @@ function moveSlide(direction) {
   // Add the active class to the new image
   slides[currentSlide].classList.add('active');
 }
+
+function scrollRow(buttonElement, direction) {
+  const rowWrapper = buttonElement.parentElement;
+  const scrollContainer = rowWrapper.querySelector('.scroll-container');
+
+  const scrollAmount = 320;
+
+  scrollContainer.scrollBy({
+    left: scrollAmount * direction, 
+    behavior: 'smooth'
+  });
+}
