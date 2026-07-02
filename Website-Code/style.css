@@ -9,6 +9,7 @@
   --ivory: #FDFBF7; 
   --charcoal: #1C241E;
   --white: #ffffff;
+  --ivory-cream: #DAC0A7;
 }
 
 /* ==========================================================================
@@ -1529,7 +1530,7 @@ p a:hover {
   padding-top: 15px;
   padding-left: 15px;
   padding-right: 15px;
-  background: var(--gold-light);
+  background: var(--charcoal);
   border-radius: 12px;
   scrollbar-width: none;
   scroll-behavior: smooth;
@@ -1559,7 +1560,7 @@ p a:hover {
   height: 300px;
   padding: 30px;
   box-sizing: border-box;
-  background: var(--midnight-emerald);
+  background: linear-gradient(var(--ivory-cream), var(--ivory));
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   text-decoration: none;
@@ -1573,12 +1574,12 @@ p a:hover {
 .article-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-  border: 1px solid var(--gold);
+  border: 7px solid var(--gold-light);
 }
 
 .article-card h3 {
   font-family: 'Orbitron', sans-serif;
-  color: var(--gold);
+  color: var(--midnight-emerald);
   font-size: 18px;
   line-height: 1.4px;
   margin-bottom: 0x;
@@ -1587,10 +1588,22 @@ p a:hover {
 .card-date {
   font-family: 'Comfortaa', sans-serif;
   width: fit-content;
+  color: var(--ivory);
+  font-size: 12px;
+  opacity: 0.8;
+  background: linear-gradient(90deg, var(--midnight-emerald), var(--emerald-light));
+  border-radius: 999px;
+  display: inline-block;
+  padding: 6px 12px;
+}
+
+.article-class {
+  font-family: 'Comfortaa', sans-serif;
+  width: fit-content;
   color: var(--charcoal);
   font-size: 12px;
   opacity: 0.8;
-  background: linear-gradient(90deg, var(--gold-light), var(--gold));
+  background: linear-gradient(var(--gold), var(--gold-light));
   border-radius: 999px;
   display: inline-block;
   padding: 6px 12px;
