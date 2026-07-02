@@ -1504,7 +1504,9 @@ p a:hover {
 }
 
 .category-section {
-  height: 340px;
+  display: block;
+  width: 100%;
+  clear: both;
   margin-bottom: 30px;
 }
 
